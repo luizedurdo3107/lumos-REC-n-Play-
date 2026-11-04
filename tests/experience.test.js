@@ -106,7 +106,7 @@ test("reinício limpa entregas, progresso, coleções e agenda", () => {
     type: "ADD_EVENT",
     event: { id: "a", title: "Aprender", date: "2026-11-01", time: "15:00" },
   });
-  state = sessionReducer(state, { type: "DELIVER" });
+  state = sessionReducer(state, { type: "DELIVER", followChecked: true });
   assert.equal(state.delivered, true);
   assert.deepEqual(sessionReducer(state, { type: "RESET" }), initialSession());
 });

@@ -5124,3 +5124,46 @@ input::placeholder {
   filter: brightness(.95);
 }
 /* NORYA_DARK_LOGO_END */
+
+/* LUMOS_INSTAGRAM_REWARD_START */
+.lumos-follow-card {
+  display: grid;
+  grid-template-columns: 124px minmax(0, 1fr);
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  margin: 24px 0;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+  text-align: left;
+  width: 100%;
+  max-width: 600px;
+}
+.lumos-follow-qr {
+  display: block;
+  width: 124px;
+  background: #fff;
+  border-radius: 9px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.lumos-follow-qr img { display: block; width: 100%; height: auto; }
+.lumos-follow-kicker { color: var(--primary); font-size: .58em; letter-spacing: .1em; font-weight: 700; }
+.lumos-follow-copy { min-width: 0; }
+.lumos-follow-copy h2 { font-size: 1.05em; letter-spacing: -.025em; margin: 6px 0 9px; color: var(--ink); overflow-wrap: anywhere; }
+.lumos-follow-copy p { font-size: .76em; line-height: 1.65; color: var(--text); }
+.lumos-follow-copy .lumos-follow-button { font-size: .72em; padding: 11px 14px; margin-top: 14px; min-height: 44px; gap: 10px; white-space: normal; }
+.lumos-follow-copy small { display: block; margin-top: 9px; font-size: .65em; color: var(--muted); }
+.lumos-follow-confirm { display: flex; align-items: flex-start; gap: 12px; font-size: .85em; line-height: 1.65; margin-top: 20px; cursor: pointer; color: var(--ink); text-align: left; }
+.lumos-follow-confirm input { flex-shrink: 0; width: 22px; height: 22px; margin-top: 3px; accent-color: var(--primary); }
+.lumos-follow-dialog-note { margin-top: 15px; color: var(--muted); font-size: .72em; line-height: 1.6; }
+@media (max-width: 1000px) and (min-width: 601px) {
+  .lumos-follow-card { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .lumos-follow-card { grid-template-columns: 1fr; justify-items: center; padding: 22px 18px; text-align: center; max-width: 360px; }
+  .lumos-follow-qr { width: 156px; }
+  .lumos-follow-copy .lumos-follow-button { width: 100%; justify-content: center; }
+}
+/* LUMOS_INSTAGRAM_REWARD_END */

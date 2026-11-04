@@ -4,6 +4,7 @@ import { useExperience } from "../context/ExperienceContext";
 import { hasReward } from "../lib/game";
 import { Button, Heading, Icon, Mascot, Pill } from "../components/UI";
 import { Modal } from "../components/Modal";
+import { FollowLumos } from "../components/FollowLumos";
 export function SuccessPage() {
   const { session } = useExperience();
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export function SuccessPage() {
       <Heading title="Você fez novas conexões!">
         Cada descoberta conta.
         <br />
-        Seu adesivo já está liberado.
+        Agora siga a Lumos para retirar seu adesivo.
       </Heading>
       <div className="completion-summary">
         <span className="summary-icon">
@@ -59,9 +60,11 @@ export function SuccessPage() {
 export function RewardPage() {
   const { session, dispatch, notify } = useExperience();
   const [deliveryOpen, setDeliveryOpen] = useState(false);
+  const [followChecked, setFollowChecked] = useState(false);
   if (!hasReward(session)) return <Navigate to="/experiencias" replace />;
   function deliver() {
-    dispatch({ type: "DELIVER" });
+    if (!followChecked || session.delivered) return;
+    dispatch({ type: "DELIVER", followChecked: true });
     setDeliveryOpen(false);
     notify("Entrega registrada nesta visita. Obrigado por participar!");
   }
@@ -69,7 +72,7 @@ export function RewardPage() {
     <section className="reward-page">
       <div className="reward-copy">
         <Pill icon={session.delivered ? "done" : "gift"}>
-          {session.delivered ? "CONQUISTA CELEBRADA" : "CONQUISTA DESBLOQUEADA"}
+          {session.delivered ? "CONQUISTA CELEBRADA" : "MISSÃO CONCLUÍDA"}
         </Pill>
         <h1 tabIndex={-1}>
           {session.delivered ? (
@@ -89,20 +92,21 @@ export function RewardPage() {
         <p>
           {session.delivered
             ? "Seu adesivo foi marcado como entregue nesta visita. Continue explorando tudo o que a Norya pode oferecer."
-            : "Mostre esta tela à equipe do estande para receber seu adesivo Norya."}
+            : "Sua missão está concluída! Falta seguir a Lumos no Instagram e mostrar à equipe para retirar seu adesivo."}
         </p>
+        {!session.delivered && <FollowLumos />}
         <div
           className={`delivery-status ${session.delivered ? "delivered" : ""}`}
         >
           <Icon name={session.delivered ? "circleCheck" : "gift"} size={24} />
           <div>
             <strong>
-              {session.delivered ? "Adesivo entregue" : "Pronto para retirar"}
+              {session.delivered ? "Adesivo entregue" : "Aguardando conferência da equipe"}
             </strong>
             <small>
               {session.delivered
                 ? "Obrigado por aprender com a gente."
-                : "Entrega pela equipe, conforme disponibilidade."}
+                : "Missão + seguir @lumos.connect. Adesivos sujeitos à disponibilidade."}
             </small>
           </div>
         </div>
@@ -141,7 +145,7 @@ export function RewardPage() {
         <Button
           variant="ghost"
           disabled={session.delivered}
-          onClick={() => setDeliveryOpen(true)}
+          onClick={() => { setFollowChecked(false); setDeliveryOpen(true); }}
         >
           {session.delivered ? "Entrega registrada" : "Confirmar entrega"}
         </Button>
@@ -150,17 +154,23 @@ export function RewardPage() {
         <Modal title="Equipe do estande" onClose={() => setDeliveryOpen(false)}>
           <div className="confirmation-content">
             <Icon name="gift" size={38} />
-            <h2>Adesivo entregue?</h2>
+            <h2>Conferir e registrar entrega</h2>
             <p>
-              Confirme depois de entregar o adesivo ao participante. O registro
-              vale apenas para esta visita neste navegador.
+              Confira se o participante segue @lumos.connect no Instagram antes
+              de entregar o adesivo. O registro vale apenas para esta visita neste navegador.
             </p>
           </div>
+          <label className="lumos-follow-confirm">
+            <input type="checkbox" checked={followChecked}
+              onChange={(event) => setFollowChecked(event.target.checked)} />
+            <span>Conferi no celular do participante que ele segue @lumos.connect.</span>
+          </label>
+          <p className="lumos-follow-dialog-note">Depois da conferência, entregue o adesivo e registre abaixo.</p>
           <div className="dialog-actions">
             <Button variant="secondary" onClick={() => setDeliveryOpen(false)}>
               Voltar
             </Button>
-            <Button icon="check" onClick={deliver}>
+            <Button icon="check" disabled={!followChecked || session.delivered} onClick={deliver}>
               Marcar como entregue
             </Button>
           </div>

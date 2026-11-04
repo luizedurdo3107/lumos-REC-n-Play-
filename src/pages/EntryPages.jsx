@@ -73,7 +73,7 @@ export function IntroPage() {
         </span>
       </div>
       <p className="intro-invitation">
-        Complete uma missão e conquiste seu adesivo.
+        Complete uma missão e siga @lumos.connect para retirar seu adesivo.
       </p>
       <Button icon="arrow" onClick={() => navigate("/experiencias")}>
         Escolher experiência

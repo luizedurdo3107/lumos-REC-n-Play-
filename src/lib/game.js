@@ -176,7 +176,9 @@ export function sessionReducer(state, action) {
         events: state.events.filter((event) => event.id !== action.id),
       };
     case "DELIVER":
-      return hasReward(state) ? { ...state, delivered: true } : state;
+      return hasReward(state) && action.followChecked === true
+        ? { ...state, delivered: true }
+        : state;
     case "RESET":
       return initialSession();
     default:
