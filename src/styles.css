@@ -5097,3 +5097,30 @@ input::placeholder {
 }
 .lumos-world.focus-mode .welcome-page { grid-template-columns: 1fr; }
 /* LUMOS_WELCOME_UPDATE_END */
+
+/* NORYA_DARK_LOGO_START */
+.norya-world.theme-dark:not(.high-contrast) .brand-link {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.brand-dark-crop {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  mix-blend-mode: lighten;
+}
+.brand-dark-crop .brand-dark-art {
+  position: absolute;
+  display: block;
+  width: 168%;
+  max-width: none;
+  height: auto;
+  left: -33%;
+  top: 50%;
+  transform: translateY(-50%);
+  filter: brightness(.95);
+}
+/* NORYA_DARK_LOGO_END */

@@ -1,3 +1,4 @@
+import { useExperience } from "../context/ExperienceContext";
 import { forwardRef } from "react";
 import {
   Accessibility,
@@ -148,13 +149,17 @@ export function Mascot({ lumos = false, className = "" }) {
   );
 }
 export function Brand({ lumos = false }) {
-  return (
+  const { settings } = useExperience();
+  const darkNorya = !lumos && settings.theme === "dark" && !settings.contrast;
+  const filename = lumos ? "lumos-logo.png" : darkNorya ? "norya-logo-dark.png" : "norya-logo.png";
+  const logo = (
     <img
-      className={`brand-image ${lumos ? "brand-lumos" : "brand-norya"}`}
-      src={`${import.meta.env.BASE_URL}brand/${lumos ? "lumos" : "norya"}-logo.png`}
+      className={darkNorya ? "brand-dark-art" : `brand-image ${lumos ? "brand-lumos" : "brand-norya"}`}
+      src={`${import.meta.env.BASE_URL}brand/${filename}`}
       alt={lumos ? "Lumos Connect" : "Norya, by Lumos Connect"}
     />
   );
+  return darkNorya ? <span className="brand-image brand-norya brand-dark-crop">{logo}</span> : logo;
 }
 export function EmptyState({ icon = "book", title, children, action }) {
   return (
