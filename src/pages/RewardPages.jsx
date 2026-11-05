@@ -4,6 +4,7 @@ import { useExperience } from "../context/ExperienceContext";
 import { hasReward } from "../lib/game";
 import { Button, Heading, Icon, Mascot, Pill } from "../components/UI";
 import { Modal } from "../components/Modal";
+import { ChallengeSummary } from "../components/ChallengeSummary";
 import { FollowLumos } from "../components/FollowLumos";
 export function SuccessPage() {
   const { session } = useExperience();
@@ -47,6 +48,7 @@ export function SuccessPage() {
         </div>
         <Icon name="circleCheck" size={22} />
       </div>
+      <ChallengeSummary session={session} id={session.lastCompleted} />
       <Button icon="gift" onClick={() => navigate("/adesivo")}>
         Ver minha conquista
       </Button>

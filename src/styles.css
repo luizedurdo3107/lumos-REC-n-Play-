@@ -5167,3 +5167,33 @@ input::placeholder {
   .lumos-follow-copy .lumos-follow-button { width: 100%; justify-content: center; }
 }
 /* LUMOS_INSTAGRAM_REWARD_END */
+
+/* NORYA_CHALLENGE_V3_START */
+.challenge-context {
+  padding: 18px 20px;
+  margin: 0 0 22px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: 12px;
+  background: var(--soft);
+  color: var(--ink);
+  text-align: left;
+}
+.challenge-context small { display: block; color: var(--primary); text-transform: uppercase; font-size: .62em; letter-spacing: .08em; font-weight: 700; margin-bottom: 8px; }
+.challenge-context p { line-height: var(--reading-line, 1.65); font-size: .86em; }
+.challenge-selection { color: var(--muted); font-size: .72em; margin-top: 10px; }
+.multi-answer-options .activity-instruction { margin-bottom: 15px; padding: 0; width: 100%; }
+.answer-letter.multi-answer-mark { border-radius: 6px; border: 1px solid var(--border); width: 25px; height: 25px; flex-shrink: 0; }
+.multi-answer-options .selected .multi-answer-mark { color: var(--primary-ink); background: var(--primary); border-color: var(--primary); }
+.challenge-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; width: min(560px, 100%); margin: 0 0 26px; }
+.challenge-summary div { padding: 15px 10px; border-radius: 12px; background: var(--soft); }
+.challenge-summary dt { font-size: .65em; color: var(--text); line-height: 1.5; }
+.challenge-summary dd { font-size: 1.45em; color: var(--ink); font-weight: 700; margin: 5px 0 0; }
+@media (max-width: 600px) {
+  .challenge-context { padding: 15px; }
+  .challenge-context p { font-size: .82em; }
+  .challenge-summary { gap: 7px; }
+  .challenge-summary div { padding: 12px 7px; }
+  .challenge-summary dt { font-size: .58em; }
+}
+/* NORYA_CHALLENGE_V3_END */

@@ -1,41 +1,17 @@
 import { getMission } from "../data/content.js";
+import { CHALLENGE_REVISION } from "../data/challenges.js";
+import { evaluateAnswer, canSubmit } from "./quizCore.js";
+export { evaluateAnswer, canSubmit } from "./quizCore.js";
 
-export function evaluateAnswer(question, answer) {
-  if (!question) return false;
-  if (question.type === "choice")
-    return Number.isInteger(answer) && answer === question.answer;
-  if (question.type === "order")
-    return (
-      Array.isArray(answer) &&
-      answer.length === question.answer.length &&
-      answer.every((value, index) => value === question.answer[index])
-    );
-  if (question.type === "match")
-    return (
-      Array.isArray(answer) &&
-      answer.length === question.pairs.length &&
-      question.pairs.every((pair) => answer.includes(pair.id))
-    );
-  return false;
-}
-export function canSubmit(question, answer) {
-  if (question.type === "choice")
-    return (
-      Number.isInteger(answer) &&
-      answer >= 0 &&
-      answer < question.options.length
-    );
-  if (question.type === "order")
-    return Array.isArray(answer) && answer.length > 0;
-  return question.type === "match" && evaluateAnswer(question, answer);
-}
+// Validação compartilhada em quizCore.js.
 export function missionFinished(session, id) {
   const mission = getMission(id);
   return Boolean(
-    mission &&
-    mission.questions.every(
-      (_, index) => session.missions[id]?.answers[index]?.correct,
-    ),
+    mission && mission.questions.length > 0 &&
+    mission.questions.every((question, index) => {
+      const answer = session.missions[id]?.answers[index];
+      return answer?.correct === true && evaluateAnswer(question, answer.value);
+    }),
   );
 }
 export function hasReward(session) {
@@ -52,6 +28,7 @@ export function firstUnfinished(session, id) {
 }
 export const initialSession = () => ({
   version: 2,
+  challengeRevision: CHALLENGE_REVISION,
   missions: {},
   completed: {},
   saved: [],
@@ -89,13 +66,14 @@ export function sessionReducer(state, action) {
       };
     }
     case "ANSWER": {
+      if (!Number.isInteger(action.index) || action.index < 0) return state;
       const data = getMission(action.id);
       const question = data?.questions[action.index];
       const current = state.missions[action.id] || {
         answers: {},
         messages: [],
       };
-      if (!question || current.answers[action.index]?.correct) return state;
+      if (!question || current.answers[action.index]?.correct || !canSubmit(question, action.answer)) return state;
       if (action.index > 0 && !current.answers[action.index - 1]?.correct)
         return state;
       const correct = evaluateAnswer(question, action.answer);

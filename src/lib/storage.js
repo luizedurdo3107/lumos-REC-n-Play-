@@ -1,4 +1,5 @@
 import { initialSession, evaluateAnswer, missionFinished } from "./game.js";
+import { CHALLENGE_REVISION } from "../data/challenges.js";
 import { catalog, getMission } from "../data/content.js";
 export const defaultSettings = {
   fontSize: 18,
@@ -72,6 +73,7 @@ export function loadSession(input) {
     const data = getMission(id);
     const answers = {};
     for (let index = 0; index < data.questions.length; index += 1) {
+      if (input.challengeRevision !== CHALLENGE_REVISION) break;
       const answer = stored.answers?.[index];
       if (!answer || (index > 0 && !answers[index - 1]?.correct)) continue;
       answers[index] = {

@@ -1,13 +1,15 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { getMission } from "../src/data/content.js";
 import { initialSession, sessionReducer } from "../src/lib/game.js";
 import { loadSession } from "../src/lib/storage.js";
 
 function completeMission() {
   let state = initialSession();
-  for (const [index, answer] of [0, 1].entries()) {
+  getMission("labs-ia").questions.forEach((question, index) => {
+    const answer = question.type === "match" ? question.pairs.map(pair => pair.id) : question.answer;
     state = sessionReducer(state, { type: "ANSWER", id: "labs-ia", index, answer });
-  }
+  });
   return state;
 }
 

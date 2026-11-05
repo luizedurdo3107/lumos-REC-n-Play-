@@ -10,7 +10,8 @@ import {
   languages,
   topics,
 } from "../data/content";
-import { canSubmit, firstUnfinished } from "../lib/game";
+import { canSubmit, firstUnfinished, evaluateAnswer } from "../lib/game";
+import { MultiAnswer } from "../components/MultiAnswer";
 import { useSpeech } from "../lib/useSpeech";
 
 export function TopicPage() {
@@ -54,7 +55,7 @@ export function TopicPage() {
       <div className="page-bottom">
         <span className="quiet-meta">
           <Icon name="bulb" size={18} />
-          Uma descoberta por vez.
+          6 etapas por missão. No seu ritmo.
         </span>
         <Button
           icon="arrow"
@@ -322,7 +323,7 @@ function LanguageLesson({ language }) {
     <section className="language-lesson">
       <div className="workspace-heading">
         <Pill icon="globe">Norya Idiomas · {language.title}</Pill>
-        <h1 tabIndex={-1}>Pequenas palavras. Novas conexões.</h1>
+        <h1 tabIndex={-1}>Converse em novas situações.</h1>
         <p>Explore as expressões e ouça como elas soam.</p>
       </div>
       <div className="language-learning">
@@ -465,12 +466,7 @@ function Activity({ module, data, index }) {
       answer,
       at: new Date().toISOString(),
     });
-    const correct =
-      question.type === "choice"
-        ? answer === question.answer
-        : question.type === "order"
-          ? answer.join("|") === question.answer.join("|")
-          : answer.length === question.pairs.length;
+    const correct = evaluateAnswer(question, answer);
     setStatus(correct ? "correct" : "wrong");
   }
   function connect(rightId) {
@@ -530,7 +526,16 @@ function Activity({ module, data, index }) {
       <div
         className={`activity-card ${status === "correct" ? "activity-correct" : ""}`}
       >
+        {question.context && (
+          <aside className="challenge-context" aria-label="Contexto do desafio">
+            <small>{question.stage}</small>
+            <p>{question.context}</p>
+          </aside>
+        )}
         <h2>{question.prompt}</h2>
+        {question.type === "multi" && (
+          <MultiAnswer question={question} answer={answer} onChange={update} disabled={status === "correct"} />
+        )}
         {question.type === "choice" && (
           <fieldset className="answer-options" disabled={status === "correct"}>
             <legend className="sr-only">Escolha a resposta</legend>
@@ -562,14 +567,13 @@ function Activity({ module, data, index }) {
         {question.type === "order" && (
           <>
             <p className="activity-instruction">
-              Toque nas palavras para montar a expressão. Toque novamente para
-              remover.
+              {question.instruction || "Toque nos blocos para montar a sequência. Toque novamente para remover."}
             </p>
             <div
               className={`sentence-builder ${answer.length ? "has-words" : ""}`}
-              aria-label="Sua expressão"
+              aria-label="Sua sequência"
             >
-              {!answer.length && <span>Sua expressão aparece aqui</span>}
+              {!answer.length && <span>Sua sequência aparece aqui</span>}
               {answer.map((tokenId) => (
                 <button
                   key={tokenId}
@@ -578,7 +582,7 @@ function Activity({ module, data, index }) {
                     update(answer.filter((value) => value !== tokenId))
                   }
                   aria-label={`Remover ${question.tokens.find((token) => token.id === tokenId)?.text}`}
-                  lang={data.id}
+                  lang={module === "idiomas" ? data.id : undefined}
                 >
                   {question.tokens.find((token) => token.id === tokenId)?.text}
                   <Icon name="close" size={15} />
@@ -591,7 +595,7 @@ function Activity({ module, data, index }) {
                   disabled={answer.includes(token.id) || status === "correct"}
                   key={token.id}
                   onClick={() => update([...answer, token.id])}
-                  lang={data.id}
+                  lang={module === "idiomas" ? data.id : undefined}
                 >
                   {token.text}
                 </button>
@@ -602,14 +606,14 @@ function Activity({ module, data, index }) {
         {question.type === "match" && (
           <>
             <p className="activity-instruction">
-              Escolha uma expressão à esquerda e seu significado à direita.
+              {question.instruction || "Escolha um item à esquerda e sua correspondência à direita."}
             </p>
             <div className="matching-grid">
               <div>
                 {question.pairs.map((pair) => (
                   <button
                     key={pair.id}
-                    lang={data.id}
+                    lang={module === "idiomas" ? data.id : undefined}
                     className={`${answer.includes(pair.id) ? "matched" : ""} ${matchLeft === pair.id ? "selected" : ""}`}
                     disabled={answer.includes(pair.id) || status === "correct"}
                     onClick={() => {

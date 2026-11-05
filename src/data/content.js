@@ -1,3 +1,5 @@
+import { challengeQuestions, extraLanguageWords } from "./challenges.js";
+
 export const topics = [
   {
     id: "ia",
@@ -19,35 +21,7 @@ export const topics = [
       "A qualidade e a variedade dos exemplos influenciam o resultado. Se os dados deixam situações de fora, o modelo pode funcionar pior nessas situações.",
       "Usar IA para estudar pode ajudar a explorar explicações e fazer perguntas. Conferir fatos e construir seu próprio raciocínio continuam sendo parte do aprendizado.",
     ],
-    questions: [
-      {
-        type: "choice",
-        prompt: "Como um sistema de IA aprende a reconhecer imagens?",
-        options: [
-          "Analisando padrões em muitos exemplos.",
-          "Guardando uma única foto como resposta para tudo.",
-          "Sabendo o significado de todas as imagens desde o início.",
-        ],
-        answer: 0,
-        hint: "Pense no que acontece quando o sistema recebe várias fotos durante o treinamento.",
-        explanation:
-          "Os exemplos ajudam o modelo a identificar padrões e fazer previsões sobre novas imagens.",
-      },
-      {
-        type: "choice",
-        prompt:
-          "A IA deu uma resposta para seu trabalho. O que você faz agora?",
-        options: [
-          "Uso a resposta, porque uma IA sempre acerta.",
-          "Confiro as informações e uso meu próprio raciocínio.",
-          "Confio na resposta se ela tiver muitas palavras.",
-        ],
-        answer: 1,
-        hint: "Uma resposta bem escrita também pode conter erros.",
-        explanation:
-          "Conferir fontes e avaliar a resposta faz parte do uso consciente da IA.",
-      },
-    ],
+    questions: challengeQuestions.ia,
   },
   {
     id: "natureza",
@@ -69,34 +43,7 @@ export const topics = [
       "As raízes e o solo do manguezal oferecem alimento e proteção a diferentes espécies. Muitas passam parte de seu ciclo de vida nesse ambiente.",
       "O descarte adequado de resíduos ajuda a reduzir a quantidade de lixo que chega aos rios e aos mangues. A conservação também depende de ações coletivas e da proteção desses ambientes.",
     ],
-    questions: [
-      {
-        type: "choice",
-        prompt: "Por que o manguezal é chamado de berçário natural?",
-        options: [
-          "Porque suas raízes impedem qualquer animal de entrar.",
-          "Porque ele é formado apenas por árvores jovens.",
-          "Porque muitas espécies encontram abrigo e alimento ali.",
-        ],
-        answer: 2,
-        hint: "Um berçário é um lugar que protege a vida em desenvolvimento.",
-        explanation:
-          "Muitas espécies encontram condições para se alimentar, crescer e se proteger no manguezal.",
-      },
-      {
-        type: "choice",
-        prompt: "Que atitude ajuda a cuidar dos rios e dos mangues?",
-        options: [
-          "Descartar resíduos corretamente e apoiar a conservação.",
-          "Jogar resíduos em um canal distante do mangue.",
-          "Retirar os animais para protegê-los em casa.",
-        ],
-        answer: 0,
-        hint: "A água dos canais e dos rios pode transportar o que descartamos.",
-        explanation:
-          "A cidade e seus rios estão conectados. O descarte correto e a proteção do ambiente fazem diferença.",
-      },
-    ],
+    questions: challengeQuestions.natureza,
   },
   {
     id: "tecnologia",
@@ -118,35 +65,7 @@ export const topics = [
       "Recursos como legendas, alternativas textuais e operação pelo teclado ajudam em situações diferentes. A personalização complementa uma base que já precisa ser acessível.",
       "Na Norya, o SeuModo demonstra possibilidades de personalização. Ajustes visuais não substituem avaliação com tecnologias assistivas e participação de pessoas com deficiência.",
     ],
-    questions: [
-      {
-        type: "choice",
-        prompt:
-          "Uma aula tem uma explicação em áudio. Que alternativa amplia o acesso?",
-        options: [
-          "Tocar o áudio mais alto para todo mundo.",
-          "Oferecer também uma transcrição do conteúdo.",
-          "Impedir que a pessoa pause a reprodução.",
-        ],
-        answer: 1,
-        hint: "Pense em quem não consegue ouvir ou está em um ambiente barulhento.",
-        explanation:
-          "Uma transcrição oferece o conteúdo em texto e permite outras formas de acompanhamento.",
-      },
-      {
-        type: "choice",
-        prompt: "Qual é a ideia por trás do SeuModo?",
-        options: [
-          "Oferecer ajustes para diferentes necessidades e preferências.",
-          "Definir uma única configuração obrigatória.",
-          "Transformar acessibilidade em uma etapa de pontuação.",
-        ],
-        answer: 0,
-        hint: "O mesmo ajuste não é confortável para todas as pessoas.",
-        explanation:
-          "Personalizar a experiência ajuda cada pessoa a participar no seu ritmo.",
-      },
-    ],
+    questions: challengeQuestions.tecnologia,
   },
 ];
 
@@ -178,35 +97,8 @@ export const languages = [
         meaning: "Até logo!",
         context: "Para se despedir de um jeito informal.",
       },
-    ],
-    questions: [
-      {
-        type: "order",
-        prompt: "Monte a expressão que significa “Bom dia!”.",
-        tokens: [
-          { id: "night", text: "night!" },
-          { id: "good", text: "Good" },
-          { id: "morning", text: "morning!" },
-        ],
-        answer: ["good", "morning"],
-        hint: "Morning significa manhã. Comece pela palavra Good.",
-        explanation:
-          "Good morning! é uma forma de cumprimentar alguém durante a manhã.",
-      },
-      {
-        type: "match",
-        prompt: "Conecte cada expressão ao seu significado.",
-        pairs: [
-          { id: "hello", phrase: "Hello!", meaning: "Olá!" },
-          { id: "thanks", phrase: "Thank you!", meaning: "Obrigado(a)!" },
-          { id: "bye", phrase: "See you!", meaning: "Até logo!" },
-        ],
-        rightOrder: ["bye", "hello", "thanks"],
-        hint: "Thank you é usado para agradecer. See you é uma despedida.",
-        explanation:
-          "Você conectou cumprimentos, agradecimentos e despedidas em inglês.",
-      },
-    ],
+    ...extraLanguageWords.en],
+    questions: challengeQuestions.en,
   },
   {
     id: "es",
@@ -235,35 +127,8 @@ export const languages = [
         meaning: "Até logo!",
         context: "Para se despedir e continuar a conversa depois.",
       },
-    ],
-    questions: [
-      {
-        type: "order",
-        prompt: "Monte a expressão que significa “Bom dia!”.",
-        tokens: [
-          { id: "noches", text: "noches!" },
-          { id: "dias", text: "días!" },
-          { id: "buenos", text: "¡Buenos" },
-        ],
-        answer: ["buenos", "dias"],
-        hint: "Días significa dias. Comece pela palavra ¡Buenos.",
-        explanation:
-          "¡Buenos días! é uma forma de cumprimentar alguém durante a manhã.",
-      },
-      {
-        type: "match",
-        prompt: "Conecte cada expressão ao seu significado.",
-        pairs: [
-          { id: "hello", phrase: "¡Hola!", meaning: "Olá!" },
-          { id: "thanks", phrase: "¡Gracias!", meaning: "Obrigado(a)!" },
-          { id: "bye", phrase: "¡Hasta luego!", meaning: "Até logo!" },
-        ],
-        rightOrder: ["thanks", "bye", "hello"],
-        hint: "Gracias é usado para agradecer. Hasta luego é uma despedida.",
-        explanation:
-          "Você conectou cumprimentos, agradecimentos e despedidas em espanhol.",
-      },
-    ],
+    ...extraLanguageWords.es],
+    questions: challengeQuestions.es,
   },
 ];
 
