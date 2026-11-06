@@ -55,7 +55,7 @@ export function TopicPage() {
       <div className="page-bottom">
         <span className="quiet-meta">
           <Icon name="bulb" size={18} />
-          6 etapas por missão. No seu ritmo.
+          3 etapas por missão. No seu ritmo.
         </span>
         <Button
           icon="arrow"

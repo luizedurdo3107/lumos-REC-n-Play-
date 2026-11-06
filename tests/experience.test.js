@@ -15,25 +15,25 @@ function finish(id, state=initialSession()) {
   return state;
 }
 
-test("cada caminho tem seis etapas, IDs únicos e respostas válidas", () => {
+test("cada caminho tem três etapas, IDs únicos e respostas válidas", () => {
   assert.equal(catalog.length, 5);
   const ids=new Set();
   for (const item of catalog) {
-    assert.equal(item.questions.length,6,item.id);
+    assert.equal(item.questions.length,3,item.id);
     for (const q of item.questions) {
       assert.ok(q.context && q.stage && q.hint && q.explanation, q.id);
       assert.ok(!ids.has(q.id),q.id); ids.add(q.id);
       assert.equal(canSubmit(q,solution(q)),true,q.id);
       assert.equal(evaluateAnswer(q,solution(q)),true,q.id);
-      if (q.type === "choice" || q.type === "multi") assert.equal(q.options.length,4);
+      if (q.type === "choice" || q.type === "multi") assert.equal(q.options.length,3);
       if (q.type === "order") {
-        assert.equal(q.tokens.length,q.answer.length+1);
+        assert.equal(q.tokens.length,q.answer.length);
         assert.equal(new Set(q.tokens.map(token=>token.id)).size,q.tokens.length);
       }
       if (q.type === "match") assert.deepEqual([...q.rightOrder].sort(),q.pairs.map(pair=>pair.id).sort());
     }
   }
-  assert.equal(ids.size,30);
+  assert.equal(ids.size,15);
 });
 test("não permite pular etapas, índices inválidos ou prêmio com duas respostas", () => {
   let state=initialSession(); const mission=getMission("labs-ia");
@@ -53,12 +53,12 @@ test("novas tentativas são contadas sem duplicar respostas corretas", () => {
   assert.equal(answer(state,"labs-ia",0,0),state);
   const done=finish("labs-ia",state);
   assert.equal(Object.keys(done.completed).length,1);
-  assert.deepEqual(getMissionStats(done,"labs-ia",getMission("labs-ia")),{total:6,completed:6,firstChecks:5,checks:7});
+  assert.deepEqual(getMissionStats(done,"labs-ia",getMission("labs-ia")),{total:3,completed:3,firstChecks:2,checks:4});
 });
 test("múltipla seleção exige conjunto exato e rejeita duplicatas e tipos inválidos", () => {
   const q=getMission("labs-ia").questions[1];
   assert.equal(evaluateAnswer(q,[2,0]),true);
-  for (const value of [[0],[0,1,2,3],[0,0],[0,"2"],[-1,2],[99],null,{},"0,2"]) assert.equal(evaluateAnswer(q,value),false);
+  for (const value of [[0],[0,1,2],[0,0],[0,"2"],[-1,2],[99],null,{},"0,2"]) assert.equal(evaluateAnswer(q,value),false);
   for (const value of [[],[0,0],["0"],[-1],[Infinity],null,{}]) assert.equal(canSubmit(q,value),false);
 });
 test("ordenação exige sequência inteira e associação exige pares distintos", () => {
@@ -67,7 +67,7 @@ test("ordenação exige sequência inteira e associação exige pares distintos"
   assert.equal(evaluateAnswer(order,order.answer.slice(0,2)),false);
   assert.equal(canSubmit(order,[order.answer[0],order.answer[0]]),false);
   assert.equal(canSubmit(order,["desconhecido"]),false);
-  const match=getMission("labs-ia").questions[3];
+  const match=getMission("idiomas-en").questions[2];
   assert.equal(evaluateAnswer(match,match.pairs.map(pair=>pair.id)),true);
   assert.equal(evaluateAnswer(match,Array(4).fill(match.pairs[0].id)),false);
 });

@@ -73,7 +73,7 @@ export function IntroPage() {
         </span>
       </div>
       <p className="intro-invitation">
-        Conclua as 6 etapas de uma missão e siga @lumos.connect para retirar seu adesivo.
+        Conclua as 3 etapas de uma missão e siga @lumos.connect para retirar seu adesivo.
       </p>
       <Button icon="arrow" onClick={() => navigate("/experiencias")}>
         Escolher experiência
@@ -93,7 +93,7 @@ export function ExperiencePage() {
         label="SUA PRÓXIMA DESCOBERTA"
         title="Qual caminho vamos explorar?"
       >
-        Escolha seu caminho: cada missão tem 6 etapas, com dicas e novas tentativas.
+        Escolha seu caminho: cada missão tem 3 etapas, com dicas e novas tentativas.
       </Heading>
       <fieldset className="experience-options">
         <legend className="sr-only">Escolha sua experiência</legend>
